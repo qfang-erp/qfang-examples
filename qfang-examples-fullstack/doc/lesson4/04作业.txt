@@ -1,0 +1,17 @@
+1 说明Stream 与Collection的区别 以及关系
+2 下面代码为什么输出流中的每个元素2遍
+Stream.of("d2", "a2", "b1", "b3", "c")
+    .filter(s -> {
+        System.out.println("filter: " + s);
+        return true;
+    })
+    .forEach(s -> System.out.println("forEach: " + s));
+    
+3  用Stream的API实现第四题的结果，其中增加一个过滤条件，即年薪大于10万的才被累加，分别用ParellStream与普通Stream来运算，看看效果的差距
+
+4 自己动手编写不少于5个Stream的例子，并解释代码
+
+加分题：
+1  用自定义的Collect实现第三题的功能
+        
+          

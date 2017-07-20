@@ -1,0 +1,35 @@
+<html>
+ <body>
+   <button id ='execute' >click open</button>
+   <button id ='undo' >click undo</button>
+   
+   <script >
+         var Tv = {
+			 open:function(){
+				alert('open TV'); 
+			 },
+			 close:function(){
+				alert('close TV'); 
+			 }
+		 };
+		 var openTvCommand = function(receiver){
+			 this.receiver = receiver;
+		 };
+		 openTvCommand.prototype.execute =function(){
+			 this.receiver.open();
+		 };
+		 openTvCommand.prototype.undo =function(){
+			 this.receiver.close();
+		 };
+		 var setCommand =function(command){
+			 document.getElementById('execute').onclick = function(){
+				 command.execute();
+			 };
+			 document.getElementById('undo').onclick = function(){
+				 command.undo();
+			 };
+		 };
+		 setCommand(new openTvCommand(Tv));	 
+   </script>
+ </body>
+</html>

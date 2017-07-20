@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<title>测试页面2</title>
+</head>
+<body>
+    <p>hello server</p>
+    <p>
+        <%
+            if(userName == "zhangsan")
+                return "Welcome my big hero zhangsan"
+            else
+                return "Sorry, who are you"
+        %>
+	</p>
+</body>
+</html>
+

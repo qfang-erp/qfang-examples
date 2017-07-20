@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd 
+	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+	default-autowire="byName">
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath:dubbo.properties</value>			
+			</list>
+		</property>
+	</bean>
+	
+	<dubbo:application name="myDemoService" owner="${dubbo.application.owner}" organization="jaf" />
+	<dubbo:registry address="${dubbo.registry.address}" />
+	<dubbo:monitor protocol="${dubbo.monitor.protocol}" />
+	<dubbo:protocol name="dubbo" port="${dubbo.protocol.dubbo.port}" />
+	<dubbo:provider protocol="dubbo" />
+
+	<dubbo:service interface="com.qfang.examples.dubbo.client.MyService"
+				   ref="myServiceSupport" protocol="dubbo" path="demo/MyService" />
+
+	<bean id="myServiceSupport" class="com.qfang.examples.dubbo.server.MyServiceSupport" />
+</beans>

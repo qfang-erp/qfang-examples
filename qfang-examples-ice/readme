@@ -1,0 +1,14 @@
+
+eclipse 安装  zeroc ice 插件
+ice - http://www.zeroc.com/download/eclipse
+
+eclipse 配置 Ice
+Window -> Preferences -> Ice Builder -> SDK Location: (选择 Ice 安装路径 eg: C:\Program Files (x86)\ZeroC\Ice-3.6.2)
+
+项目中引入 Ice
+新建项目 -> 右键 -> Ice Builder -> Add Ice Builder
+自动生成的目录：
+generated 该目录下是由插件根据 sclice 定义的接口文件，自动生成的 java 端服务代理类
+slice 该目录下用于存放编写的 xxx.ice 文件（由 slice 语言编写的接口定义文件）
+
+

@@ -1,0 +1,15 @@
+{
+  "name": "react-lesson4-helloworld",
+  "version": "1.0.0",
+  "description": "react lesson4 helloworld",
+  "main": "index.js",
+  "scripts": {
+    "start": "react-scripts start"
+  },
+  "author": "walle liao",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
+  }
+}

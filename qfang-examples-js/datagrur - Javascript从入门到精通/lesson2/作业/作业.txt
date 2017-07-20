@@ -1,0 +1,13 @@
+1. js中的函数带有两个隐藏的变量，其中一个是arguments，这是一个类似数组的对象，但非数组，没有数组的方法，现在要借助数组的方法，对这个对象进行排序和截取操作，请大家实现代码
+
+2.document是js的一个内置对象，这个对象有个getElementById方法，可以根据html标签的id获取对应的对象。现在有如下代码：
+<html>
+<body>
+ <div id = 'div1'>I am here </div>
+  <script>
+    var getId = document.getElementById;
+alert(getId('div1'));
+  </script>
+</body>
+</html>
+这段代码事实上想通过一个简短的getId来代替document.getElementById这个方法，不过结果不符合预期，这段代码在大多数浏览器中都会抛出一个异常，请大家根据函数的调用模式解释下原因，并且改造这段代码，使得getId可以替代document.getElementById这个方法。

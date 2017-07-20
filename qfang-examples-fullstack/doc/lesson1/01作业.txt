@@ -1,0 +1,43 @@
+最终提交PPT来说明每个作业，需要源码的，则贴上源码主要逻辑截图，以及运行输出的结果
+1题
+byte ba=127;
+ byte bb=ba<<2;
+ System.out.println(bb);
+这个为什么会出错？给出解释，并且纠正错误
+
+2题
+int a=-1024;
+给出 a>>1与a>>>1的的结果，并且用位移方式图示解释
+
+3题
+定义一个10240*10240的byte数组，分别采用行优先与列优先的循环方式来计算 这些单元格的总和，看看性能的差距，并解释原因
+行优先的做法，每次遍历一行，然后到下一行。
+
+4题
+定义Java类Salary {String name, int baseSalary, int bonus  },随机产生1万个实例，属性也随机产生（baseSalary范围是5-100万，
+bonus为（0-10万），其中name长度为5，随机字符串，然后进行排序，排序方式为收入总和（baseSalary*13+bonus），
+输出收入最高的10个人的名单
+
+5题
+编码实现下面的要求
+现有对象 MyItem {byte type,byte color,byte price} ，要求将其内容存放在一个扁平的byte[]数组存储数据的ByteStore {byte[] storeByteArry}对象里,
+即每个MyItem占用3个字节，第一个MyItem占用storeByteArry[0]-storeByteArry[2] 3个连续字节，以此类推，最多能存放1000个MyItem对象
+ByteStore提供如下方法
+putMyItem(int index,MyItem item) 在指定的Index上存放MyItem的属性，这里的Index是0-999，而不是storeByteArry的Index
+getMyItem(int index),从指定的Index上查找MyItem的属性，并返回对应的MyItem对象。
+
+要求放入3个MyItem对象（index为0-2）并比较getMyItem方法返回的这些对象是否与之前放入的对象equal。
+加分功能如下：
+  放入1000个MyItem对象到ByteStore中，采用某种算法对storeByteArry做排序，排序以price为基准，排序完成后，输出前100个结果
+
+6题
+Arrays.parallelSort在数组超过多少时候才开启并行排序？采用位运算，给出推导过程
+
+7题
+DualPivotQuicksort算法与普通冒泡算法相比，有哪些改进，对比常见的几种基于数组的排序算法，说说为什么Java选择了快排
+以下是加分题目
+第一：
+写出标准冒泡排序与快速排序的算法，排序对象为上面说的 Salary {name, baseSalary, bonus  },收入总和为baseSalary*13+bonus,以收入总和为排序标准。
+排序输出 年薪最高的100个人，输出结果为 xxxx:yyyy万
+第二：
+第五题中的 storeByteArry改为int[]数组，采用Java位操作方式来实现1个Int 拆解为4个Byte，存放MyItem对象的属性。

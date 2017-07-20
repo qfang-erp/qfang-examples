@@ -1,0 +1,2 @@
+http\://www.jax-examples.com/schema/scope=com.qfang.examples.spring.ch5.ScopeNamespaceHandler
+http\://www.jax-examples.com/schema/myContext=com.qfang.examples.spring.ch6.MyExtContextHandler

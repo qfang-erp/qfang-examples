@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<script type="text/javascript" src="lesson2.js"></script>
+</head>
+<body>
+  <p>lesson02</p>
+
+  <div id = 'div1'>I am here </div>
+  <script type="text/javascript">
+    var getId = document.getElementById;
+
+    // console.log(getId('dive1'));
+
+    // getId('div1')  直接调用出错，但是 document.getElementById() 调用正常的原因
+    // 是因为 document.getElementById 这样调用时 getElementById 内部的 this 是指向 document 对象
+    // 而转换之后 getId('div1')  这样调用，方法内部的 this 指向了 window 对象
+    // 例如可以通过下面这个方法来修正 getId，显式地指定在 document 对象上执行 getElementById 方法
+    console.log(getId.apply(document, ['div1']));  // 等同于 document.getElementById("div1")
+    // console.log(document.getElementById("div1"));
+
+    // 要修正这个 getId 报错的问题，可以采用如下方式
+    var getId2 = function(fun) {
+      return function() {
+        return fun.apply(document, arguments);  // 传入 getId 方法，然后明确指定其运行时的 this 指向 document
+      }
+    }(getId);
+
+    console.log(getId2('div1'));
+  </script>
+</body>
+</html>

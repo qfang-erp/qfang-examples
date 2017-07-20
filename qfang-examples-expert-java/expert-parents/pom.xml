@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>jaf-examples-expert-java</artifactId>
+	<packaging>pom</packaging>
+	<modules>
+		<module>../expert-common</module>
+		<module>../expert-lesson1</module>
+		<module>../expert-lesson6</module>
+		<module>../expert-lesson7</module>
+	</modules>
+
+	<parent>
+		<groupId>com.jaf.examples</groupId>
+		<artifactId>jaf-examples-parents</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../../jaf-examples-parents/pom.xml</relativePath>
+	</parent>
+
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>3.4</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-collections4</artifactId>
+				<version>4.1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.5</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>19.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.javolution</groupId>
+				<artifactId>javolution</artifactId>
+				<version>5.3.1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.javolution</groupId>
+				<artifactId>javolution-core-java</artifactId>
+				<version>6.1.0</version>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
+</project>

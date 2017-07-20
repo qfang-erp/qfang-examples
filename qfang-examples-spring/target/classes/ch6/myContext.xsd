@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns="http://www.jax-examples.com/schema/myContext"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://www.jax-examples.com/schema/myContext">
+
+    <xsd:element name="encrypted-property-placeholder" type="customType">
+    </xsd:element>
+
+    <xsd:element name="decrypt-property-placeholder" type="customType">
+    </xsd:element>
+
+    <xsd:complexType name="customType">
+        <xsd:attribute name="location" type="xsd:string">
+        </xsd:attribute>
+    </xsd:complexType>
+
+
+    
+</xsd:schema>

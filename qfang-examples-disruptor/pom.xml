@@ -1,0 +1,35 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>qfang-examples-disruptor</artifactId>
+	<packaging>jar</packaging>
+	<name>qfang-examples-disruptor</name>
+	<url>http://maven.apache.org</url>
+
+	<parent>
+		<groupId>com.qfang.examples</groupId>
+		<artifactId>qfang-examples-parents</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../qfang-examples-parents/pom.xml</relativePath>
+	</parent>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<!-- http://mvnrepository.com/artifact/com.lmax/disruptor -->
+		<dependency>
+			<groupId>com.lmax</groupId>
+			<artifactId>disruptor</artifactId>
+			<version>3.3.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd 
+	http://code.alibabatech.com/schema/dubbo 
+	http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath:dubbo.properties</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
+	<dubbo:application name="consumer-of-qfang-erp-facade-core" />
+
+	<!-- 使用multicast广播注册中心暴露发现服务地址 -->
+	<dubbo:registry address="${dubbo.registry.address}" />
+
+	<dubbo:protocol name="dubbo" port="${dubbo.protocol.dubbo.port}" />
+
+	<dubbo:reference id="xinfangTransactionReportFacade"
+		interface="com.qfang.erp.facade.trade.XinfangTransactionReportFacade"
+		protocol="dubbo" />
+</beans>
