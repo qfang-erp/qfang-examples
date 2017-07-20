@@ -11,6 +11,8 @@ public class TestMain {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
         HelloWorld hw = context.getBean(HelloWorld.class);
         System.out.println(hw);
+        System.out.println("Test github");
+
     }
 
 }
