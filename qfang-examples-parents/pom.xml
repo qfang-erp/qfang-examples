@@ -32,9 +32,8 @@
         <module>../qfang-examples-kafka</module>
         <module>../qfang-examples-httpserver</module>
         <module>../qfang-examples-spring</module>
-
-        <module>../jaf-examples-pattern</module>
-        <module>../jaf-examples-katas</module>
+        <module>../qfang-examples-pattern</module>
+        <module>../qfang-examples-katas</module>
 
     </modules>
 
