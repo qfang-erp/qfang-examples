@@ -12,6 +12,7 @@ public class TestMain {
         HelloWorld hw = context.getBean(HelloWorld.class);
         System.out.println(hw);
         System.out.println("Test github");
+        System.out.println("Test github");
 
     }
 
