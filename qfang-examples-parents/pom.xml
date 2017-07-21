@@ -34,6 +34,7 @@
         <module>../qfang-examples-spring</module>
         <module>../qfang-examples-pattern</module>
         <module>../qfang-examples-katas</module>
+        <module>../qfang-examples-solr</module>
 
     </modules>
 
