@@ -1,5 +1,5 @@
 # qfang-examples-solr
-#部署solrcloud
+#部署solrcloud\
 1、下载solr安装文件 http://www.apache.org/dyn/closer.lua/lucene/solr/6.3.0。
 2、解压solr tar zxvf solr-6.3.0.zip\
 3、安装并启动 zookeeper\
