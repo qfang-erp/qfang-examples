@@ -7,7 +7,6 @@ import java.nio.channels.AsynchronousServerSocketChannel;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -70,7 +69,6 @@ public class AIOTimeServer {
     }
 
     public static void main(String[] args) {
-       // System.out.println(LocalDateTime.now().format(formatter).getBytes());
         try {
             AIOTimeServer server=new AIOTimeServer();
             server.server();
