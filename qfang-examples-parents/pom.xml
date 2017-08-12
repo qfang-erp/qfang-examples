@@ -17,7 +17,6 @@
     </properties>
 
     <modules>
-        <module>../qfang-examples-akka</module>
         <module>../qfang-examples-concurrent</module>
         <module>../qfang-examples-disruptor</module>
         <module>../qfang-examples-dubbo</module>
@@ -28,14 +27,12 @@
         <module>../qfang-examples-zookeeper</module>
         <module>../qfang-examples-j2se</module>
         <module>../qfang-examples-java8</module>
-        <module>../qfang-examples-fullstack</module>
         <module>../qfang-examples-kafka</module>
         <module>../qfang-examples-httpserver</module>
         <module>../qfang-examples-spring</module>
         <module>../qfang-examples-pattern</module>
-        <module>../qfang-examples-katas</module>
         <module>../qfang-examples-solr</module>
-
+        <module>../qfang-examples-jvm</module>
     </modules>
 
     <dependencyManagement>
