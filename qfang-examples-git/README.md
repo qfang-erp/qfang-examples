@@ -7,3 +7,5 @@
 - git log 命令相关
 - git reset 重置
 - git 分支
+- [git stash 用法](./docs/git&nbsp;stash用法.md)
+- git diff 基于第三方工具的配置
