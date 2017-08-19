@@ -10,10 +10,10 @@ git 三大工作空间
 *另外还有一个 git 的远程仓库，远程仓库是为了分布式开发时，大家进行代码进行共享和同步*
 
 `git add` 添加文件到暂存区示例  
-![git add 添加文件到暂存区](../images/ch1/01.png)
+![git add 添加文件到暂存区](../images/0011.png)
 
 `git commit` 添加文件到本地仓库  
-![git commit 添加文件到本地仓库](../images/ch1/02.png)
+![git commit 添加文件到本地仓库](../images/0012.png)
 
 
 ## git 中的一些概念
@@ -42,7 +42,7 @@ Git 有一种特殊的引用，称为符号引用。它并不直接指向一个�
 当`git commit`时，git 仅提交索引文件中列出的文件到 git 本地仓库  
 
 下面通过一幅头来说明 git 中实体、引用、索引之间的关系  
-![图片说明 git 中实体、引用、索引之间的关系](../images/ch1/03.png)  
+![图片说明 git 中实体、引用、索引之间的关系](../images/0013.png)  
 .git/objects/  目录下存放着所有的实体  
 .git/refs/  目录下存放着所有的引用  
 .git/index  文件保存着索引信息  
@@ -125,10 +125,10 @@ init project
 - 817f78ce220689b7d83afc43bf487133e244bccb tag 实体  
 
 之前已经提到过，git 的所有实体都是存放在 .git/objects 文件夹下，我们来查看下 .git/objects 文件夹发现多出了几个 0b,5a,81,c5 这样的文件夹  
-![.git/objects 文件夹](../images/ch1/04.png)  
+![.git/objects 文件夹](../images/0014.png)  
 这些文件夹正是存放实体二进制文件的地方，git 通过将40位的SHA1拆分，前2位作为文件夹名称，后38位作为文件名称保存在该文件夹下，这样避免一个文件夹下存放过多文件，导致文件夹无法打开  
 随便点开 0b 文件夹，可以发现该文件下有个一个文件  
-![.git/objects/0b 文件夹](../images/ch1/05.png)  
+![.git/objects/0b 文件夹](../images/0015.png)  
 将文件夹名称和文件名称合并后得到的 SHA1：0bb9011444ae6ccbf30fdbf8470eebde0007d398 正好就是 readme.txt 文件对应的 blob 实体的 SHA1 的值
 
 
