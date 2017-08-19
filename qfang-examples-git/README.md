@@ -8,7 +8,7 @@
 - git reset 重置
 - git 分支
 - [git stash 用法](./docs/git%20stash用法.md)
-- [git 使用中一些小技巧](../docs/git使用中一些小技巧.md)
+- [git 使用中一些小技巧](./docs/git使用中一些小技巧.md)
 
 
 ## git 使用中其他常见问题总结
