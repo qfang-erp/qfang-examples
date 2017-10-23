@@ -20,7 +20,7 @@ public class TestCommonPool2 {
     public static void main(String[] args) {
 
         PersonPool pool=new PersonPool();
-        ExecutorService executorService= Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*8);
+        ExecutorService executorService= Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*2);
         List<Future> list=new ArrayList<>();
         for(int i=0;i<100 ;i++) {
             Future future= executorService.submit(() -> {
