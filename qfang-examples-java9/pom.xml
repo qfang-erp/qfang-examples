@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>qfang-examples-parents</artifactId>
+        <groupId>com.qfang.examples</groupId>
+        <version>1.0.0</version>
+        <relativePath>../qfang-examples-parents/pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>qfang-examples-java9</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>module-user</module>
+        <module>module-address</module>
+    </modules>
+
+</project>

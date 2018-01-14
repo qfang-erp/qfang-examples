@@ -17,6 +17,7 @@
     </properties>
 
     <modules>
+        <module>../qfang-examples-akka</module>
         <module>../qfang-examples-concurrent</module>
         <module>../qfang-examples-disruptor</module>
         <module>../qfang-examples-dubbo</module>
@@ -33,6 +34,8 @@
         <module>../qfang-examples-pattern</module>
         <module>../qfang-examples-solr</module>
         <module>../qfang-examples-jvm</module>
+        <module>../qfang-examples-akka</module>
+        <module>../qfang-examples-java9</module>
     </modules>
 
     <dependencyManagement>
