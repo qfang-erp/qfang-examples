@@ -10,9 +10,9 @@ import org.springframework.aop.support.DefaultPointcutAdvisor;
 public class ProxyFactoryMain {
 
     public static void main(String[] args) {
-//        addAdvice();
+        addAdvice();
 
-        getProxyClass();
+//        getProxyClass();
     }
 
     private static void addAdvice() {
@@ -36,6 +36,8 @@ public class ProxyFactoryMain {
         proxyFactory.addAdvice(new SecurityInterceptor());
         IUserService proxyUserService = (IUserService) proxyFactory.getProxy();
         System.out.println(proxyUserService.getClass());
+
+        System.out.println("-----------------------");
 
         UserService serviceSupport = new UserService();
         ProxyFactory proxyFactory1 = new ProxyFactory(serviceSupport);

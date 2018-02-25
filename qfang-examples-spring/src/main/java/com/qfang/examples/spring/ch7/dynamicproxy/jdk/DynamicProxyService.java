@@ -19,7 +19,7 @@ public class DynamicProxyService implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        System.out.println("hahahahhahaha");
+        System.out.println("before say hello");
         return method.invoke(target, args);
     }
 

@@ -16,7 +16,7 @@
 				<value>userService</value>
 			</list>
 		</property>
-		<property name="InterceptorNames">
+		<property name="interceptorNames">
 			<list>
 				<value>securityInterceptor</value>
 				<value>logBeforeAdvice</value>

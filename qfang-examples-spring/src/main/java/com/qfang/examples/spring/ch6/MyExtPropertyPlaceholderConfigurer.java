@@ -12,6 +12,8 @@ public class MyExtPropertyPlaceholderConfigurer extends PropertyPlaceholderConfi
     @Override
     protected String convertProperty(String propertyName, String propertyValue) {
         if(PASSWORD.equals(propertyName)) {
+            // 对配置文件中的明文进行加密的功能
+            // 配置文件中配置的是明文，但是真正替换的 bean 属性中时是密文
             return MD5Utils.encrypted(propertyValue);
         }
         return super.convertProperty(propertyName, propertyValue);

@@ -2,7 +2,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:scope="http://www.qfang-examples.com/schema/scope"
 	xsi:schemaLocation="
-     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
 
+	<bean id="demoBean" class="com.qfang.examples.spring.d01.DemoBean">
+		<property name="name" value="hello spring" />
+ 	</bean>
 
 </beans>

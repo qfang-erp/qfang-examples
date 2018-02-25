@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SecurityInterceptor {
 
-    @Pointcut("execution(public * com.jaf.examples.spring.ch8.annotationconfig.*Service.find*(..))")
+    @Pointcut("execution(public * com.qfang.examples.spring.ch8.annotationconfig.*Service.find*(..))")
     public void myPointcut() {
     }
 

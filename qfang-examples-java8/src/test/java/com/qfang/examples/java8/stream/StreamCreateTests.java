@@ -5,8 +5,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import org.junit.Test;
 
 /**
@@ -66,6 +69,14 @@ public class StreamCreateTests {
 		Optional<Integer> max = integers.max(Integer::compareTo);
 		assertThat(max.isPresent()).isTrue();
 		assertThat(max.get()).isEqualTo(10);
+
+		Cache<String, Object> cache = CacheBuilder.newBuilder()
+				.initialCapacity(20)
+				.maximumSize(50)
+				.recordStats()
+				.expireAfterWrite(1, TimeUnit.HOURS)
+				.removalListener(notification -> System.out.println(notification.getValue()))
+				.build();
 	}
 	
 }

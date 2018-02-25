@@ -7,7 +7,7 @@
      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
 
 	<bean id="proxyFactoryBean" class="org.springframework.aop.framework.ProxyFactoryBean">
-		<property name="target" ref="userService"></property>
+		<property name="target" ref="userService" />
 		<property name="interceptorNames">
 			<list>
 				<value>securityInterceptor</value>

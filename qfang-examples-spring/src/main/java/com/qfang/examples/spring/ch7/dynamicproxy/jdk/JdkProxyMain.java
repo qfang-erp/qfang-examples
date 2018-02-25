@@ -9,6 +9,9 @@ public class JdkProxyMain {
         DynamicProxyService proxyService = new DynamicProxyService();
         IService service = (IService) proxyService.bind(new RealService());
         service.sayHello();
+        System.out.println(service.getClass());
+
+        ProxyGeneratorUtils.writeProxyClassToHardDisk("d:/RealService$proxy11.class", RealService.class);
     }
 
 }

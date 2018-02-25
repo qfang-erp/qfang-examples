@@ -12,6 +12,8 @@ public class Main {
 
     public static void main(String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext("classpath:d01/applicationContext.xml");
+        DemoBean bean = context.getBean(DemoBean.class);
+        System.out.println(bean.getName());
     }
 
 }
