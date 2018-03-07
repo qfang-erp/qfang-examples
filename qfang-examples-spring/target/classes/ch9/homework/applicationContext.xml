@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-	   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-	   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:property-placeholder location="classpath:ch9/homework/jdbc.properties" />
+    <!--<context:property-placeholder location="classpath:ch9/homework/jdbc.properties" />-->
 
-	<context:component-scan base-package="com.jaf.examples.spring.ch9.homework" />
+    <bean id="placeholderConfigurer" class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+        <property name="location" value="classpath:ch9/homework/jdbc.properties" />
+    </bean>
+
+	<context:component-scan base-package="com.qfang.examples.spring.ch9.homework" />
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="${driverClassName}"/>
@@ -19,6 +20,6 @@
         <property name="dataSource" ref="dataSource" />
     </bean>
 
-    <tx:annotation-driven transaction-manager="transactionManager" />
+    <!--<tx:annotation-driven transaction-manager="transactionManager" />-->
 
 </beans>

@@ -13,10 +13,11 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>4.12</junit.version>
-        <spring.framework.version>4.2.6.RELEASE</spring.framework.version>
+        <spring.framework.version>4.2.5.RELEASE</spring.framework.version>
     </properties>
 
     <modules>
+        <module>../qfang-examples-akka</module>
         <module>../qfang-examples-concurrent</module>
         <module>../qfang-examples-disruptor</module>
         <module>../qfang-examples-dubbo</module>
@@ -33,6 +34,8 @@
         <module>../qfang-examples-pattern</module>
         <module>../qfang-examples-solr</module>
         <module>../qfang-examples-jvm</module>
+        <module>../qfang-examples-akka</module>
+        <module>../qfang-examples-java9</module>
     </modules>
 
     <dependencyManagement>
