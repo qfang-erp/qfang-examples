@@ -22,7 +22,7 @@
 	<dubbo:provider protocol="dubbo" />
 
 	<dubbo:service interface="com.qfang.examples.dubbo.client.MyService"
-				   ref="myServiceSupport" protocol="dubbo" path="demo/MyService" />
+				   ref="myServiceSupport" protocol="dubbo" path="demo/MyService" version="1.0.1" />
 
 	<bean id="myServiceSupport" class="com.qfang.examples.dubbo.server.MyServiceSupport" />
 </beans>
