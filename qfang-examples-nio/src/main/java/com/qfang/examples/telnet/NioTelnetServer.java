@@ -78,9 +78,8 @@ public class NioTelnetServer {
             try {
                 // 每个 selectionKey 都只会绑定到一个 SocketChannel 中，一个 SocketChannel 相当于一个 Socket
                 SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
-                ByteBuffer attachment = (ByteBuffer) selectionKey.attachment();
-                attachment.compact();
-                int size = socketChannel.read(attachment);
+                ByteBuffer buffer = ByteBuffer.allocate(512);
+                int size = socketChannel.read(buffer);
 
                 // 这里将数据读取放到 attachment 中，当然这里也可以将数据读取之后直接使用
                 // socketChannel.write(attachment); 方式将数据之间写回 socket
@@ -89,8 +88,12 @@ public class NioTelnetServer {
                 if(size == -1) {  // 链接关闭
                     socketChannel.close();
                 } else {
-                    // 因为之前取消了 read 事件的注册，所以这里需要重新注册 read 事件，并且 attachment 中有数据需要回写，所以也注册了 write 事件
-                    selectionKey.interestOps(selectionKey.interestOps() | SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+                    // 读取到了数据，将读取到的数据绑定到 selectionKey 上面，交给写事件处理
+                    // 每次绑定的都是一个新的 ByteBuffer 对象，避免 attachment 对象的同步问题
+                    selectionKey.attach(buffer);
+
+                    // 读完之后只注册写事件，先保证写事件执行完成后，再注册读事件
+                    selectionKey.interestOps(selectionKey.interestOps() | SelectionKey.OP_WRITE);
                     selectionKey.selector().wakeup();
                 }
             } catch (IOException ex) {
@@ -114,15 +117,12 @@ public class NioTelnetServer {
             // 这里的 selectionKey socketChannel 和之前读使用的都是同一个对象
             SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
             ByteBuffer attachment = (ByteBuffer) selectionKey.attachment();
-            int readPosition = attachment.position();
-            if(readPosition > 0) {
-                attachment.flip();
-                byte[] readMsg = new byte[readPosition];
+            attachment.flip();
+            if(attachment.hasRemaining()) {
+                byte[] readMsg = new byte[attachment.remaining()];
                 attachment.get(readMsg);
-                // 读完之后需要 clear，否则下次 hasRemaining() 还会返回 true
-                attachment.clear();
 
-                ByteBuffer writeBuffer = ByteBuffer.allocate(100);
+                ByteBuffer writeBuffer = ByteBuffer.allocate(1024);
                 writeBuffer.put("\r\nFollow you: ".getBytes(Charset.forName("UTF-8")));
                 writeBuffer.put(readMsg);
                 writeBuffer.put("\r\n".getBytes(Charset.forName("UTF-8")));
@@ -133,14 +133,12 @@ public class NioTelnetServer {
                     if(size == -1) {  // 链接关闭
                         socketChannel.close();
                     } else {
-                        selectionKey.interestOps(selectionKey.interestOps() | SelectionKey.OP_WRITE);
+                        selectionKey.interestOps(selectionKey.interestOps() | SelectionKey.OP_READ);
                         selectionKey.selector().wakeup();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else {
-                // 如果没有可以读取的数据，则什么也不出了，因为之前已经取消了 write 事件的监听，所以下次 selector#select 则不会进入 isWritable
             }
         }
     }
