@@ -9,7 +9,7 @@
 
 	<myContext:encrypted-property-placeholder location="classpath:ch6/system.properties" />
 
-	<bean id="user" class="com.qfang.examples.spring.ch6.User">
+	<bean id="user" class="com.qfang.examples.spring.common.User">
 		<property name="username" value="${username}" />
 		<property name="password" value="${password}" />
 	</bean>

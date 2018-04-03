@@ -79,6 +79,7 @@ public class NioTelnetServer {
                 // 每个 selectionKey 都只会绑定到一个 SocketChannel 中，一个 SocketChannel 相当于一个 Socket
                 SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
                 ByteBuffer buffer = ByteBuffer.allocate(512);
+                // 非阻塞模式下,read()方法在尚未读取到任何数据时可能就返回了。所以需要关注它的int返回值，它会告诉你读取了多少字节。
                 int size = socketChannel.read(buffer);
 
                 // 这里将数据读取放到 attachment 中，当然这里也可以将数据读取之后直接使用
@@ -129,13 +130,13 @@ public class NioTelnetServer {
                 writeBuffer.flip();
                 try {
                     // writeBuffer 写之前先要 flip 一下，否则不会有任何数据写出去
-                    int size = socketChannel.write(writeBuffer);
-                    if(size == -1) {  // 链接关闭
-                        socketChannel.close();
-                    } else {
-                        selectionKey.interestOps(selectionKey.interestOps() | SelectionKey.OP_READ);
-                        selectionKey.selector().wakeup();
+                    // 非阻塞模式下，write()方法在尚未写出任何内容时可能就返回了，所以需要在循环中调用write()
+                    while(writeBuffer.hasRemaining()) {
+                        socketChannel.write(writeBuffer);
                     }
+
+                    selectionKey.interestOps(selectionKey.interestOps() | SelectionKey.OP_READ);
+                    selectionKey.selector().wakeup();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

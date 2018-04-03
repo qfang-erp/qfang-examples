@@ -1,4 +1,4 @@
-package com.qfang.examples.spring.ch6;
+package com.qfang.examples.spring.common;
 
 /**
  * Created by walle on 2017/4/16.
@@ -8,6 +8,13 @@ public class User {
     private String username;
 
     private String password;
+
+    public User() {}
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     public String getUsername() {
         return username;

@@ -1,5 +1,6 @@
 package com.qfang.examples.spring.ch6;
 
+import com.qfang.examples.spring.ioc.property.MD5EncryptedPropertyPlaceholderConfigurer;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser;
 import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
@@ -27,7 +28,7 @@ public class MyExtContextHandler extends NamespaceHandlerSupport {
 
         @Override
         protected Class<?> getBeanClass(Element element) {
-            return MyExtPropertyPlaceholderConfigurer.class;
+            return MD5EncryptedPropertyPlaceholderConfigurer.class;
         }
 
         @Override

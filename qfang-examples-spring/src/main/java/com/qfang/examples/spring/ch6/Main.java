@@ -1,5 +1,6 @@
 package com.qfang.examples.spring.ch6;
 
+import com.qfang.examples.spring.common.User;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
