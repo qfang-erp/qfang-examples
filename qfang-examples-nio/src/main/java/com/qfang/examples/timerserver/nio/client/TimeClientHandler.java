@@ -71,7 +71,7 @@ public class TimeClientHandler implements Runnable {
 	}
 
 	private void doConnect() throws IOException {
-		if(socketChannel.connect(new InetSocketAddress(Config.HOST, Config.PORT))) {
+		if(socketChannel.connect(new InetSocketAddress("192.168.111.111", Config.PORT))) {
 			socketChannel.register(selector, SelectionKey.OP_READ);
 			doWrite(socketChannel);
 		} else {

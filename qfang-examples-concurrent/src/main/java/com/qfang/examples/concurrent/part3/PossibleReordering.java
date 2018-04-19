@@ -17,7 +17,7 @@ public class PossibleReordering {
 	int a = 0, b = 0;
 	
 	public static void main(String[] args) {
-		IntStream.range(0, 1000).forEach(x -> {
+		IntStream.range(0, 100000).forEach(x -> {
 			new PossibleReordering().execute();
 		});
 	}
@@ -42,8 +42,11 @@ public class PossibleReordering {
 		} catch (InterruptedException e) {
 			// ignore
 		}
-		
-		System.out.format("(x: %s, y: %s) \n", x, y);
+
+		int x1 = x;
+		int y1 = y;
+		if(x1 == 0 && y1 == 0)
+		    System.out.format("(x: %s, y: %s) \n", x1, y1);
 	}
 	
 }

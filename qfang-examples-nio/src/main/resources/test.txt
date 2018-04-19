@@ -1,3 +1,5 @@
 test
 text
 file
+
+中文
