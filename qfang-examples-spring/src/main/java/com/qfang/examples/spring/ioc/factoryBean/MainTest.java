@@ -13,7 +13,7 @@ public class MainTest {
 
     public static void main(String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext("ioc/factoryBean/applicationContext.xml");
-        User user = context.getBean(User.class);
+        User user = context.getBean("user", User.class);
         System.out.println(user.toString());
     }
 

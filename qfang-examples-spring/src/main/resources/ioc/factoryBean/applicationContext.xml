@@ -8,4 +8,6 @@
 
     <bean id="user" class="com.qfang.examples.spring.ioc.factoryBean.UserFactoryBean" />
 
+    <bean id="userBean" class="com.qfang.examples.spring.common.User" />
+
 </beans>
