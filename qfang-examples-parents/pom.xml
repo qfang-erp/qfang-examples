@@ -36,6 +36,7 @@
         <module>../qfang-examples-jvm</module>
         <module>../qfang-examples-akka</module>
         <module>../qfang-examples-java9</module>
+        <module>../qfang-examples-netty</module>
     </modules>
 
     <dependencyManagement>
