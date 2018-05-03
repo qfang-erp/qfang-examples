@@ -2,8 +2,6 @@ package com.qfang.examples.proxy;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
-import io.netty.buffer.CompositeByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
@@ -14,12 +12,16 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.HttpContentDecompressor;
+import io.netty.handler.codec.http.HttpObject;
+import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpResponseDecoder;
+import io.netty.util.CharsetUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.util.stream.Collectors;
 
 
@@ -41,49 +43,38 @@ public class HttpProxy {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline().addLast(new HttpResponseDecoder());
+                        ch.pipeline().addLast(new HttpContentDecompressor());
+                        ch.pipeline().addLast(new HttpObjectAggregator(Integer.MAX_VALUE));
                         ch.pipeline().addLast(new ClientChannelHandler());
                     }
                 });
 
-        ChannelFuture future = bootstrap.connect("47.92.66.207", 80);
+        ChannelFuture future = bootstrap.connect("www.bootcss.com", 80);
         future.addListener((ChannelFuture future1) -> {
             if(future1.isSuccess()) {
                 System.out.println("connect success");
-
-//                ByteBuf buf = Unpooled.wrappedBuffer("xx".getBytes());
-                future1.channel().pipeline().writeAndFlush(getRequestHead()).sync();
+                future1.channel().pipeline().writeAndFlush(getRequestHead());
             } else {
                 System.out.println("error ..");
             }
         });
 
+        future.channel().closeFuture().sync();
+        group.shutdownGracefully();
     }
 
-    private static class ClientChannelHandler extends SimpleChannelInboundHandler<ByteBuf> {
-
-        CompositeByteBuf compositeByteBuf;
+    private static class ClientChannelHandler extends SimpleChannelInboundHandler<HttpObject> {
 
         @Override
-        protected void messageReceived(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
+        protected void messageReceived(ChannelHandlerContext ctx, HttpObject msg) throws Exception {
             System.out.println("messageReceived....");
 
-            ByteBufAllocator allocator = ctx.channel().alloc();
-            if(compositeByteBuf == null)
-                compositeByteBuf = allocator.compositeDirectBuffer();
+            System.out.println(msg);
+            DefaultFullHttpResponse response = (DefaultFullHttpResponse) msg;
 
-            // addComponent 参数一定要使用 Unpooled.copiedBuffer copy 后的 ByteBuf，这里是尝试将多出收到的消息缓存起来，最后再进行一次统一的解码
-            // messageReceived 方法被调用完成之后，都会将 msg release 掉，导致最后解码时发现之前所有读取到的数据都已经不能用了 refCnt: 0
-            // addComponent 方法不会维护 writerIndex，需要自己来手动处理
-            compositeByteBuf.addComponent(Unpooled.copiedBuffer(msg)).writerIndex(compositeByteBuf.writerIndex() + msg.writerIndex());
-            int dl = msg.readableBytes();
-            System.out.println(dl);
-            if(dl < 1024) {
-                System.out.println(compositeByteBuf.readableBytes());
+            System.out.println(response.content().toString(CharsetUtil.UTF_8));
 
-                byte[] bytes = new byte[compositeByteBuf.capacity()];
-                compositeByteBuf.getBytes(compositeByteBuf.readerIndex(), bytes);
-                System.out.println(new String(bytes, Charset.forName("UTF-8")));
-            }
+            ctx.channel().close();
         }
     }
 
