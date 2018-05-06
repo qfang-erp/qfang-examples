@@ -7,6 +7,7 @@
     - channelHandler 是如何工作的
     - ChannelPipeline 是如何工作的
     - EventLoop 是如何工作的
+    - SingleThreadEventExecutor 
 
 
 ``` java
@@ -164,3 +165,90 @@ io.netty.channel.DefaultChannelHandlerContext.findContextOutbound
 io.netty.channel.DefaultChannelHandlerContext.skipFlags0 方法
 ChannelHandlerAdapter 这个里面所有的方法都是 @Skip 标识的
 
+io.netty.bootstrap.Bootstrap#doConnect
+io.netty.bootstrap.AbstractBootstrap#initAndRegister  // create Channel & init Channel
+	// createChannel: 抽象方法，根据 Bootstrap 类型不同，调用 Bootstrap#createChannel 或者 ServerBootstrap#createChannel
+	io.netty.bootstrap.Bootstrap#createChannel // 1. 从 EventLoopGroup 获取 EventLoop; 2. 调用 BootstrapChannelFactory#newChannel -> NioSocketChannel(EventLoop eventLoop) 构造方法 -> NioSocketChannel#newSocket // SocketChannel.open() 返回 java.nio SocketChannel
+
+	
+### AbstractChannel#read 调用到 ChannelPipeline 的链式传递过程
+io.netty.channel.AbstractChannel#read
+io.netty.channel.DefaultChannelPipeline#read  -> tail.read();
+io.netty.channel.DefaultChannelHandlerContext#read  
+	-> io.netty.channel.DefaultChannelHandlerContext#findContextOutbound(int mask)  // 从后往前找，找到第一个覆盖了该方法 (mask) 的 ChannelHandler
+		next.invoker.invokeRead(next);  // DefaultChannelHandlerContext.invoker.invokeRead(next)
+		// DefaultChannelHandlerContext.invoker -> io.netty.channel.DefaultChannelHandlerInvoker
+		io.netty.channel.ChannelHandlerInvokerUtil#invokeReadNow -> ChannelHandlerContext.handler().read(ctx);  -> ChannelHandler.read(ctx)
+
+ChannelHandler.read(ctx)
+	-> 要么在自己的 ChannelHandler 中实现 read 方法
+	-> 要么走到 io.netty.channel.ChannelHandlerAdapter#read 方法，默认实现。基于当前 ChannelHandlerContext 继续往前找到下一个实现了该方法的 ChannelHandlerContext，这样就实现了 ChannelPipeline 的链式传递
+
+`ChannelHandlerAdapter.read` 方法
+
+``` java
+@Skip
+@Override
+public void read(ChannelHandlerContext ctx) throws Exception {
+    // DefaultChannelHandlerContext#read -> DefaultChannelHandlerContext#findContextOutbound(int mask)
+    // 继续找到前一个覆盖了该方法的 ChannelHandler
+    ctx.read();
+}
+```
+
+### DefaultChannelPipeline 说明
+1、fireChannelActive, fireChannelInactive, fireExceptionCaught, fireUserEventTriggered, fireChannelRead, fireChannelReadComplete, fireChannelWritabilityChanged
+这些方法调用的都是 head#fireXXX(); -> DefaultChannelHandlerContext#fireXXX();
+DefaultChannelHandlerContext#findContextInbound 也即这些方法是从 ChannelPipeline 的 head 开始往后找，一个个执行符合要求的 ChannelHandler
+并且这些方法也是 DefaultChannelPipeline.TailHandler 中被覆盖的方法
+
+2、bind, connect, disconnect, close, flush, read, write, writeAndFlush 
+这些方法调用的都是 tail#XXX() -> DefaultChannelHandlerContext#XXX();
+DefaultChannelHandlerContext#findContextOutbound 也即这些方法是从 ChannelPipeline 的 tail 开始往前找，一个个执行符合要求的 ChannelHandler
+并且这些方法都是 DefaultChannelPipeline.HeadHandler 中被覆盖的方法
+
+
+NioEventLoopGroup workerGroup = new NioEventLoopGroup();
+
+NioEventLoopGroup
+    this(0); 
+    this(nThreads, (Executor) null);
+    this(nThreads, executor, SelectorProvider.provider());
+    super(nThreads, executor, selectorProvider);
+
+MultithreadEventLoopGroup
+    super(nThreads == 0 ? DEFAULT_EVENT_LOOP_THREADS : nThreads, executor, args);
+       DEFAULT_EVENT_LOOP_THREADS = Math.max(1, SystemPropertyUtil.getInt(
+                       "io.netty.eventLoopThreads", Runtime.getRuntime().availableProcessors() * 2));
+    
+MultithreadEventExecutorGroup
+    executor = new ThreadPerTaskExecutor(newDefaultThreadFactory());  // ThreadPerTaskExecutor 实现了 java.util.concurrent.Executor, 
+    children = new EventExecutor[nThreads];  // EventExecutor extends EventExecutorGroup extends ScheduledExecutorService extends ExecutorService extends Executor
+        children[i] = newChild(executor, args);  // newChild 方法在 NioEventLoopGroup 里面被实现 -> return new NioEventLoop(this, executor, (SelectorProvider) args[0]);
+        
+MultithreadEventExecutorGroup 中初始化了固定数量的 NioEventLoop （相当于线程）
+
+``` java
+NioEventLoop(NioEventLoopGroup parent, Executor executor, SelectorProvider selectorProvider) {
+    super(parent, executor, false);
+    if (selectorProvider == null) {
+        throw new NullPointerException("selectorProvider");
+    }
+    provider = selectorProvider;
+    selector = openSelector();
+}
+```
+
+NioEventLoop 里面的关键属性 & 关键方法
+    Selector selector;  // nio Selector
+    SelectedSelectionKeySet selectedKeys;  // SelectedSelectionKeySet extends AbstractSet<SelectionKey>，SelectionKey 的集合，SelectedSelectionKeySet 内部维护了两个 SelectionKey 集合
+    
+    #select // Selector#select
+    #selectNow
+    #register  // 将 channel 注册到 NioEventLoop 关联的 selector
+    #run  // 先调用 #select -> #processSelectedKeysOptimized / #processSelectedKeysPlain -> #runAllTasks 
+
+    
+
+bootstrap#channel(NioSocketChannel.class);
+bootstrap#connect("127.0.0.1", 8787)
