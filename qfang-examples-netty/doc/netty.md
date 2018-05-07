@@ -148,17 +148,66 @@ io.netty.channel.socket.nio.NioSocketChannel.doConnect
 
 
 
-io.netty.channel.DefaultChannelHandlerContext.findContextOutbound
-``` java
-    private DefaultChannelHandlerContext findContextOutbound(int mask) {
-        DefaultChannelHandlerContext ctx = this;
-        do {
-            ctx = ctx.prev;
-        } while ((ctx.skipFlags & mask) != 0);
-        return ctx;  // 返回的是 DefaultChannelPipeline.head
-    }
+### DefaultChannelHandlerContext#findContextInbound & #findContextOutbound 
 
+1、fireChannelActive, fireChannelInactive, fireExceptionCaught, fireUserEventTriggered, fireChannelRead, fireChannelReadComplete, fireChannelWritabilityChanged
+这些方法调用的都是 head#fireXXX(); -> DefaultChannelHandlerContext#fireXXX();
+DefaultChannelHandlerContext#findContextInbound 也即这些方法是从 ChannelPipeline 的 head 开始往后找，一个个执行符合要求的 ChannelHandler
+并且这些方法也是 DefaultChannelPipeline.TailHandler 中被覆盖的方法
+
+2、bind, connect, disconnect, close, flush, read, write, writeAndFlush 
+这些方法调用的都是 tail#XXX() -> DefaultChannelHandlerContext#XXX();
+DefaultChannelHandlerContext#findContextOutbound 也即这些方法是从 ChannelPipeline 的 tail 开始往前找，一个个执行符合要求的 ChannelHandler
+并且这些方法都是 DefaultChannelPipeline.HeadHandler 中被覆盖的方法
+
+``` java
+// 这个方法是从 ChannelPipeline.head 开始往 tail 方向依次寻找符合条件的 ChannelHandler
+private DefaultChannelHandlerContext findContextInbound(int mask) {
+    DefaultChannelHandlerContext ctx = this;
+    do {
+        ctx = ctx.next;
+    } while ((ctx.skipFlags & mask) != 0);
+    return ctx;
+}
+
+// 这个方法是从 ChannelPipeline.tail 开始往 head 方向依次寻找符合条件的 ChannelHandler
+private DefaultChannelHandlerContext findContextOutbound(int mask) {
+    DefaultChannelHandlerContext ctx = this;
+    do {
+        ctx = ctx.prev;
+    } while ((ctx.skipFlags & mask) != 0);
+    return ctx;
+}
 ```
+
+
+
+netty4 中的 DefaultChannelHandlerContext 有两个属性 inbound & outbound，用来标识该 ChannelHandler 是用来处理出站/入职事件的
+
+``` java
+DefaultChannelHandlerContext(
+        DefaultChannelPipeline pipeline, EventExecutor executor, String name, ChannelHandler handler) {
+    super(pipeline, executor, name, isInbound(handler), isOutbound(handler));
+    if (handler == null) {
+        throw new NullPointerException("handler");
+    }
+    this.handler = handler;
+}
+
+@Override
+public ChannelHandler handler() {
+    return handler;
+}
+
+private static boolean isInbound(ChannelHandler handler) {
+    return handler instanceof ChannelInboundHandler;
+}
+
+private static boolean isOutbound(ChannelHandler handler) {
+    return handler instanceof ChannelOutboundHandler;
+}
+```
+
 
 为啥 DefaultChannelPipeline.head.skipFlags & mask == 0
 因为 DefaultChannelPipeline.head 重写了 bind 方法，另外参考 DefaultChannelHandlerContext.flagsVal 的值的生成
@@ -170,7 +219,6 @@ io.netty.bootstrap.AbstractBootstrap#initAndRegister  // create Channel & init C
 	// createChannel: 抽象方法，根据 Bootstrap 类型不同，调用 Bootstrap#createChannel 或者 ServerBootstrap#createChannel
 	io.netty.bootstrap.Bootstrap#createChannel // 1. 从 EventLoopGroup 获取 EventLoop; 2. 调用 BootstrapChannelFactory#newChannel -> NioSocketChannel(EventLoop eventLoop) 构造方法 -> NioSocketChannel#newSocket // SocketChannel.open() 返回 java.nio SocketChannel
 
-	
 ### AbstractChannel#read 调用到 ChannelPipeline 的链式传递过程
 io.netty.channel.AbstractChannel#read
 io.netty.channel.DefaultChannelPipeline#read  -> tail.read();
@@ -197,15 +245,6 @@ public void read(ChannelHandlerContext ctx) throws Exception {
 ```
 
 ### DefaultChannelPipeline 说明
-1、fireChannelActive, fireChannelInactive, fireExceptionCaught, fireUserEventTriggered, fireChannelRead, fireChannelReadComplete, fireChannelWritabilityChanged
-这些方法调用的都是 head#fireXXX(); -> DefaultChannelHandlerContext#fireXXX();
-DefaultChannelHandlerContext#findContextInbound 也即这些方法是从 ChannelPipeline 的 head 开始往后找，一个个执行符合要求的 ChannelHandler
-并且这些方法也是 DefaultChannelPipeline.TailHandler 中被覆盖的方法
-
-2、bind, connect, disconnect, close, flush, read, write, writeAndFlush 
-这些方法调用的都是 tail#XXX() -> DefaultChannelHandlerContext#XXX();
-DefaultChannelHandlerContext#findContextOutbound 也即这些方法是从 ChannelPipeline 的 tail 开始往前找，一个个执行符合要求的 ChannelHandler
-并且这些方法都是 DefaultChannelPipeline.HeadHandler 中被覆盖的方法
 
 
 NioEventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -249,6 +288,5 @@ NioEventLoop 里面的关键属性 & 关键方法
     #run  // 先调用 #select -> #processSelectedKeysOptimized / #processSelectedKeysPlain -> #runAllTasks 
 
     
-
 bootstrap#channel(NioSocketChannel.class);
 bootstrap#connect("127.0.0.1", 8787)
