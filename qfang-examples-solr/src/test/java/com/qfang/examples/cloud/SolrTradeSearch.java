@@ -1,6 +1,5 @@
-package com.qfang.examples.solr;
+package com.qfang.examples.cloud;
 
-import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrInputDocument;
 

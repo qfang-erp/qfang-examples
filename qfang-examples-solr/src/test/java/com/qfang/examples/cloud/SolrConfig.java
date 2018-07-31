@@ -1,4 +1,4 @@
-package com.qfang.examples.solr;
+package com.qfang.examples.cloud;
 
 /**
  * @author huxianyong

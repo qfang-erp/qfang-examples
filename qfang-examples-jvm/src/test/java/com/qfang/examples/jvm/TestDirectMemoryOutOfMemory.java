@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author huxianyong
  * @create 2017-08-05 下午 12:18
- * JVM参数  -verbose:gc -Xmx10M -Xms10M -Xss128k -XX:+PrintGCDetails -XX:MaxDirectMemorySize=10M
+ * JVM参数  -verbose:gc -Xmx4g -Xms4g -Xss1m -XX:+PrintGCDetails -XX:MaxDirectMemorySize=10M
  */
 public class TestDirectMemoryOutOfMemory {
 
@@ -21,9 +21,10 @@ public class TestDirectMemoryOutOfMemory {
     public static void main(String[] args) {
         List<ByteBuffer> list=new LinkedList<>();
         while(true) {
-            ByteBuffer bb = ByteBuffer.allocateDirect(ONE_MB);
-            list.add(bb);
-            System.out.println("Current Direct Memory size ："+list.size()+"M");
+                ByteBuffer bb = ByteBuffer.allocateDirect(ONE_MB);
+                list.add(bb);
+                System.out.println("Current Direct Memory size ：" + list.size() + "M");
+
         }
     }
 

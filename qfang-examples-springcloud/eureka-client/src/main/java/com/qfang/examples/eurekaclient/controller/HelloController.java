@@ -2,6 +2,8 @@ package com.qfang.examples.eurekaclient.controller;
 
 
 import com.qfang.examples.eurekaclient.entity.Person;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.client.ServiceInstance;
@@ -44,6 +46,7 @@ public class HelloController {
 
     @GetMapping(value = "/hello2")
     public Person hello(@RequestHeader String name, @RequestHeader Integer age) {
+
         return new Person(name, age);
     }
 

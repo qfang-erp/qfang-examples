@@ -1,4 +1,4 @@
-package com.qfang.examples.solr;
+package com.qfang.examples.cloud;
 
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;

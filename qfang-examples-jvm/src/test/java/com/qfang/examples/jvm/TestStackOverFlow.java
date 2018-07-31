@@ -12,6 +12,7 @@ public class TestStackOverFlow {
 
     public void add(){
         counter++;
+        System.out.println(counter);
         add();
     }
 

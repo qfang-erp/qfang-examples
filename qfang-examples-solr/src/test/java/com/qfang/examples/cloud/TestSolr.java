@@ -1,8 +1,7 @@
-package com.qfang.examples.solr;
+package com.qfang.examples.cloud;
 
 import org.apache.solr.client.solrj.SolrQuery;
 
-import java.util.List;
 import java.util.UUID;
 
 /**
