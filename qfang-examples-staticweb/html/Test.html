@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #app{
+            border: 1px solid #333333;
+            padding: 10px;
+            width: 200px;
+            background: #999999;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 3px 3px 5px #888888;
+        }
+        #app2{
+            border:15px solid transparent;
+            width:300px;
+            padding:10px 20px;
+            text-align: center;
+            -webkit-border-image:url(border.png) 30 30 stretch;
+        }
+        #app3{
+            width:100px;
+            height: 100px;
+            background: red;
+            padding-top: 30px;
+            text-align: center;
+            border-radius:10px;
+            -webkit-animation-name:myfirst;
+            -webkit-animation-duration:5s ;
+            -webkit-animation-iteration-count: 10;
+            -webkit-animation-direction:alternate;
+
+        }
+        @keyframes myfirst {
+            0% {background: red;
+                -webkit-transform: translate(10px,10px);
+            }
+            10% {background: yellowgreen;
+                -webkit-transform: translate(50px,50px);}
+            20% {background: wheat;
+                -webkit-transform: translate(150px,150px);}
+            50% {background: blue;
+                -webkit-transform: translate(200px,200px);}
+            70% {background: green;
+                -webkit-transform: translate(250px,250px);}
+            100% {background: red;
+                -webkit-transform: translate(300px,300px);}
+
+        }
+    </style>
+</head>
+<body>
+<div id="app">  hello world</div>
+<div id="app2">  hello world</div>
+<div id="app3">  hello world</div>
+
+</body>
+</html>

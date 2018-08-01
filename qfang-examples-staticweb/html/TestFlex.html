@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .div1{
+            width: 80%;
+            border: 1px solid black;
+            display: flex;
+            justify-content: center ;
+        }
+        .div1 div{
+            text-align: center;
+            width: 70px;
+            height: 70px;
+            margin: 2px;
+            border: 1px solid green;
+            border-radius: 10px;
+            background: green;
+            font-size: 20px;
+        }
+        .div2{
+            width: 350px;
+            border: 1px solid black;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between ;
+            flex-wrap: wrap;
+            align-items:flex-end;
+            order:2;
+
+        }
+        .div2 div{
+            text-align: center;
+            width: 70px;
+            height: 70px;
+            margin: 2px;
+            border: 1px solid green;
+            border-radius: 10px;
+            background: green;
+            font-size: 20px;
+        }
+        .div3{
+            height: 300px;
+            border: 1px solid black;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between ;
+            flex-wrap: wrap;
+            align-items:stretch;
+
+        }
+        .div3 div{
+            text-align: center;
+            width: 70px;
+            height: 70px;
+            margin: 2px;
+            border: 1px solid green;
+            border-radius: 10px;
+            background: green;
+            font-size: 20px;
+        }
+        .div4{
+            height: 500px;
+            border: 1px solid black;
+            display: flex;
+
+
+        }
+        .div4 div{
+            text-align: center;
+            width: 50px;
+            height: 50px;
+            margin: 2px;
+            border: 1px solid green;
+            border-radius: 10px;
+            background: green;
+            font-size: 20px;
+
+        }
+        .bdiv2{
+            order:1;
+            align-self:flex-end;
+        }
+
+    </style>
+</head>
+<body>
+  <div class="div1">
+      <div class="adiv1">1</div>
+      <div class="adiv2">2</div>
+      <div class="adiv3">3</div>
+      <div class="adiv4">4</div>
+      <div class="adiv5">5</div>
+      <div class="adiv6">6</div>
+      <div class="adiv7">7</div>
+      <div class="adiv8">8</div>
+      <div class="adiv9">9</div>
+  </div>
+
+  <div class="div2">
+      <div class="adiv1">1</div>
+      <div class="adiv2">2</div>
+      <div class="adiv3">3</div>
+      <div class="adiv4">4</div>
+      <div class="adiv5">5</div>
+      <div class="adiv6">6</div>
+      <div class="adiv7">7</div>
+      <div class="adiv8">8</div>
+      <div class="adiv9">9</div>
+  </div>
+  <div class="div3">
+      <div class="adiv1">1</div>
+      <div class="adiv2">2</div>
+      <div class="adiv3">3</div>
+  </div>
+  <div class="div4">
+      <div class="adiv1">1</div>
+      <div class="bdiv2">2</div>
+      <div class="adiv3">3</div>
+      <div class="adiv4">4</div>
+      <div class="adiv5">5</div>
+
+  </div>
+</body>
+</html>
