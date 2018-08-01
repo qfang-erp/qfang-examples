@@ -53,7 +53,7 @@ public class DocumentTests extends BaseClientTests {
 		String id = "AVQcV6ZuJfzEoA_96tQB";
 		DeleteResponse response = client.prepareDelete(INDEX_NAME, TYPE_NAME, id).execute()
 				.actionGet();
-		System.out.println(response.isFound());
+		System.out.println(response.status());
 	}
 	
 	@Test

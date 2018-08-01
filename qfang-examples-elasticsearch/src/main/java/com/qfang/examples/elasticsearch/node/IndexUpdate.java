@@ -10,8 +10,9 @@ import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.TransportAddress;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
 
 public class IndexUpdate {
 
@@ -19,9 +20,7 @@ public class IndexUpdate {
 		// TODO Auto-generated method stub
 //		Client client = TransportClient.builder().build()
 //		        .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("192.168.1.110"), 9300));
-		
-		Client client = TransportClient.builder().build()
-		        .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("169.254.135.217"), 9300));
+		Client client =ClientFactory.createClient();
 		//update(client);
 		bulkUpdate(client);
 

@@ -8,12 +8,13 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.text.Text;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.highlight.HighlightField;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
 
 public class QueryTest {
 
@@ -21,9 +22,8 @@ public class QueryTest {
 		// TODO Auto-generated method stub
 //		Client client = TransportClient.builder().build()
 //		        .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("192.168.1.110"), 9300));
-		
-		Client client = TransportClient.builder().build()
-		        .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("169.254.135.217"), 9300));
+
+		Client client =ClientFactory.createClient();
 		//matchAllQuery(client);
 		/* full text queries */
 		//matchQuery(client);
@@ -130,22 +130,23 @@ public class QueryTest {
 				.setTypes("article")
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
 				.setQuery(qb)
-				.addHighlightedField("title")
-				.setHighlighterPreTags("<span class='searchKey'>")
-				.setHighlighterPostTags("</san>")
+
+				//.addHighlightedField("title")
+				//.setHighlighterPreTags("<span class='searchKey'>")
+				//.setHighlighterPostTags("</san>")
 				.setFrom(0)
 				.setSize(10)
 				.execute().actionGet();
 		for (SearchHit hit: res.getHits()) {
-			Map<String, HighlightField> result = hit.highlightFields();
-			HighlightField highlightedSummary = result.get("title");
-			Text[] titleTexts = highlightedSummary.getFragments();
-			String allFragments = "";
-			for (Text text: titleTexts){
-				allFragments += text;
-			}
-			System.out.println(result);
-			System.out.println(allFragments);		
+			//Map<String, HighlightField> result = hit.highlightFields();
+			//HighlightField highlightedSummary = result.get("title");
+		//	Text[] titleTexts = highlightedSummary.getFragments();
+//			String allFragments = "";
+//			for (Text text: titleTexts){
+//				allFragments += text;
+//			}
+//			System.out.println(result);
+//			System.out.println(allFragments);
 		}
 		
 		// on shutdown

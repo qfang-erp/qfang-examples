@@ -7,17 +7,17 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
-import org.elasticsearch.search.aggregations.metrics.MetricsAggregationBuilder;
-import org.elasticsearch.search.aggregations.metrics.avg.AvgBuilder;
-import org.elasticsearch.search.aggregations.metrics.max.MaxBuilder;
-import org.elasticsearch.search.aggregations.metrics.min.MinBuilder;
-import org.elasticsearch.search.aggregations.metrics.percentiles.PercentileRanksBuilder;
-import org.elasticsearch.search.aggregations.metrics.percentiles.PercentilesBuilder;
-import org.elasticsearch.search.aggregations.metrics.stats.extended.ExtendedStatsBuilder;
+import org.elasticsearch.search.aggregations.metrics.avg.AvgAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.max.MaxAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.min.MinAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.percentiles.PercentileRanksAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.percentiles.PercentilesAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.stats.extended.ExtendedStatsAggregationBuilder;
+import org.elasticsearch.search.aggregations.metrics.valuecount.ValueCountAggregationBuilder;
+import org.elasticsearch.search.aggregations.support.ValuesSourceAggregationBuilder;
 
 public class AggsQueryTest {
 
@@ -25,8 +25,7 @@ public class AggsQueryTest {
 		// TODO Auto-generated method stub
 
 		
-		Client client = TransportClient.builder().build()
-		        .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("169.254.135.217"), 9300));
+		Client client =ClientFactory.createClient();
 		//avgQuery(client);
 		//minQuery(client);
 		//maxQuery(client);
@@ -42,7 +41,7 @@ public class AggsQueryTest {
 	
 	public static void avgQuery(Client client ) {
 		SearchResponse res = null;
-		AvgBuilder agg = AggregationBuilders
+		AvgAggregationBuilder agg = AggregationBuilders
 				.avg("avg_num")
 				.field("like");
 		
@@ -61,7 +60,7 @@ public class AggsQueryTest {
 	
 	public static void minQuery(Client client ) {
 		SearchResponse res = null;
-		MinBuilder agg = AggregationBuilders
+		MinAggregationBuilder agg = AggregationBuilders
 				.min("min_num")
 				.field("like");
 		
@@ -80,7 +79,7 @@ public class AggsQueryTest {
 
 	public static void maxQuery(Client client ) {
 		SearchResponse res = null;
-		MaxBuilder agg = AggregationBuilders
+		MaxAggregationBuilder agg = AggregationBuilders
 				.max("max_num")
 				.field("like");
 		
@@ -99,7 +98,7 @@ public class AggsQueryTest {
 	
 	public static void extendedStatsQuery(Client client ) {
 		SearchResponse res = null;
-		ExtendedStatsBuilder agg = AggregationBuilders
+		ExtendedStatsAggregationBuilder agg = AggregationBuilders
 				.extendedStats("extended_stats_num")
 				.field("like");
 		
@@ -119,8 +118,8 @@ public class AggsQueryTest {
 	@SuppressWarnings("rawtypes")
 	public static void valueCountQuery(Client client ) {
 		SearchResponse res = null;
-		
-		MetricsAggregationBuilder agg =
+
+		ValueCountAggregationBuilder agg =
 		        AggregationBuilders
 		                .count("agg")
 		                .field("like");
@@ -140,7 +139,7 @@ public class AggsQueryTest {
 	
 	public static void percentileQuery(Client client ) {
 		SearchResponse res = null;
-		PercentilesBuilder agg = AggregationBuilders
+		PercentilesAggregationBuilder agg = AggregationBuilders
 				.percentiles("percentile_num")
 				.field("like")
 				.percentiles(95,99,99.9);
@@ -159,20 +158,20 @@ public class AggsQueryTest {
 	}
 
 	public static void percentileRankQuery(Client client ) {
-		SearchResponse res = null;
-		PercentileRanksBuilder agg = AggregationBuilders
-				.percentileRanks("percentile_rank_num")
-				.field("like")
-				.percentiles(3,5);
-		
-		res = client.prepareSearch("search_test")
-				.setTypes("article")
-				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-				.addAggregation(agg)
-				.setFrom(0)
-				.setSize(10)
-				.execute().actionGet();
-		System.out.println(res);
+//		SearchResponse res = null;
+//		PercentileRanksAggregationBuilder agg = AggregationBuilders
+//				.percentileRanks("percentile_rank_num")
+//				.field("like")
+//				.percentiles(3,5);
+//
+//		res = client.prepareSearch("search_test")
+//				.setTypes("article")
+//				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+//				.addAggregation(agg)
+//				.setFrom(0)
+//				.setSize(10)
+//				.execute().actionGet();
+//		System.out.println(res);
 		
 		// on shutdown
 		client.close();
@@ -232,7 +231,7 @@ public class AggsQueryTest {
 		        AggregationBuilders
 		                .dateHistogram("agg")
 		                .field("publish_date")
-		                .interval(DateHistogramInterval.YEAR)
+		              //  .interval(DateHistogramInterval.YEAR)
 		                .minDocCount(1);
 		res = client.prepareSearch("search_test")
 				.setTypes("article")

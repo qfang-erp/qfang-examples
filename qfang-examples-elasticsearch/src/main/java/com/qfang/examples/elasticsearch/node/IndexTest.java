@@ -8,11 +8,13 @@ import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.settings.Settings;
 
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
+import org.elasticsearch.common.transport.TransportAddress;
+import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
 
 public class IndexTest {
 
@@ -21,11 +23,10 @@ public class IndexTest {
 //		Client client = TransportClient.builder().build()
 //		        .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("192.168.1.110"), 9300));
 		
-		Client client = TransportClient.builder().build()
-		        .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("169.254.135.217"), 9300));
+		Client client =ClientFactory.createClient();
 		//indexGet(client);
-		//indexCreate(client);
-		indexDelete(client,"AVPmcmhdem-ZMWF0VMHm");
+		indexCreate(client);
+		//indexDelete(client,"AVPmcmhdem-ZMWF0VMHm");
 
 	}
 	
@@ -45,7 +46,7 @@ public class IndexTest {
 		map.put("publish", "publish_date");
 		String s = new Gson().toJson(map);
 		IndexResponse res = null;
-		res = client.prepareIndex("api_test","type_test").setSource(s).execute().actionGet();
+		res = client.prepareIndex("api_test","type_test").setSource(s, XContentType.JSON).execute().actionGet();
 		System.out.println(res);
 		// on shutdown
 		client.close();
@@ -55,7 +56,7 @@ public class IndexTest {
 
 		DeleteResponse res = null;
 		res = client.prepareDelete("api_test","type_test", id).execute().actionGet();
-		System.out.println(res.isFound());
+		System.out.println(res.status().getStatus());
 		// on shutdown
 		client.close();
 	}

@@ -3,10 +3,10 @@ package com.qfang.examples.elasticsearch;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import com.qfang.examples.elasticsearch.node.ClientFactory;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
@@ -27,11 +27,8 @@ public class BaseClientTests {
 	
 	@BeforeClass
 	public static void initClient() throws UnknownHostException {
-		Settings settings = Settings.settingsBuilder().put("cluster.name", "elasticsearchTest").build();
-		client = TransportClient.builder().settings(settings).build()
-							.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("192.168.1.81"), 9300))
-							.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("192.168.1.82"), 9300))
-							.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("192.168.1.83"), 9300));
+		Settings settings = Settings.builder().put("cluster.name", "elasticsearchTest").build();
+		client = ClientFactory.createClient();
 	}
 
 	@AfterClass

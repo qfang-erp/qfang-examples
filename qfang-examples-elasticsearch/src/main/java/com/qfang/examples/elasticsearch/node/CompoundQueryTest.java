@@ -1,13 +1,9 @@
 package com.qfang.examples.elasticsearch.node;
 
-import java.net.InetAddress;
 import java.net.UnknownHostException;
-//import static org.elasticsearch.index.query.QueryBuilders.constantScoreQuery;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -18,9 +14,8 @@ public class CompoundQueryTest {
 		// TODO Auto-generated method stub
 //		Client client = TransportClient.builder().build()
 //		        .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("192.168.1.110"), 9300));
-		
-		Client client = TransportClient.builder().build()
-		        .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("169.254.135.217"), 9300));
+
+		Client client =ClientFactory.createClient();
 		//constantScoreQuery(client);
 		//booQuery(client);
 		disMaxQuery(client);
