@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:batch="http://www.springframework.org/schema/batch"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                          http://www.springframework.org/schema/batch  http://www.springframework.org/schema/batch/spring-batch.xsd
+                          ">
+
+    <bean id="tradeDataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+        <property name="filters" value="config,log4j" />
+        <property name="connectionProperties" 		value="config.file=http://192.168.0.242/new44/SHENZHEN-druid-pool.properties" />
+    </bean>
+
+
+    <!-- 事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.batch.support.transaction.ResourcelessTransactionManager"/>
+
+    <!-- 任务仓库 -->
+    <bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean">
+        <property name="transactionManager" ref="transactionManager"/>
+    </bean>
+
+    <!-- 任务加载器 -->
+    <bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+        <property name="jobRepository" ref="jobRepository"/>
+    </bean>
+
+    <bean id="reportReader" class="org.springframework.batch.item.database.JdbcCursorItemReader">
+        <property name="dataSource"  ref="tradeDataSource"/>
+        <property name="sql" value="select r.fid             id,
+                                           r.ftenementdetail tenementdetail,
+                                           p.fname           personname,
+                                           o.fname           orgname
+                                      from t_trade_transactionreport r, t_hr_person p, t_hr_org o
+                                     where r.fkpersonid = p.fid
+                                       and r.fkorgid = o.fid
+                                       and r.fenable='YES'"/>
+        <property name="fetchSize" value="100"/>
+        <property name="rowMapper">
+            <bean class="org.springframework.jdbc.core.BeanPropertyRowMapper">
+                <property name="mappedClass" value="com.qfang.examples.springbatch.dto.ReportDto"/>
+            </bean>
+        </property>
+    </bean>
+    <bean id="reportProcessor" class="com.qfang.examples.springbatch.processor.ReportProcessor"/>
+
+    <bean id="reportWriter" class="org.springframework.batch.item.database.JdbcBatchItemWriter">
+        <property name="dataSource"  ref="tradeDataSource"/>
+        <property name="itemSqlParameterSourceProvider" >
+            <bean class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider"/>
+        </property>
+        <property name="sql" value="insert into t_trade_reportbak (id,tenementdetail,personname,orgname) values(:id,:tenementDetail,:personName,:orgName)"/>
+    </bean>
+
+    <batch:job id="bakReportJob">
+        <batch:step id="bakReportJob_step">
+            <batch:tasklet  transaction-manager="transactionManager">
+                <batch:chunk reader="reportReader"
+                             processor="reportProcessor"
+                             writer="reportWriter"
+                             commit-interval="100"/>
+            </batch:tasklet>
+        </batch:step>
+    </batch:job>
+
+
+
+
+</beans>
